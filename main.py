@@ -1,11 +1,11 @@
-from flask import Flask, request, url_for
+from flask import Flask, url_for, request
 
 app = Flask(__name__)
 
 
 @app.route("/load_photo", methods=["POST", "GET"])
 def load_photo():
-    file = url_for("static", filename="img/1.png")
+    file = url_for("static", filename="img/1.jpg")
     if request.method == "GET":
         return f"""<!doctype html>
                         <html lang="en">
@@ -14,6 +14,9 @@ def load_photo():
                             <meta name="viewport" content="width=device-width,
                             initial-scale=1, shrink-to-fit=no">
                             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+                            <link rel="stylesheet" type="text/css"
+                            href="{url_for("static",
+                            filename="css/style.css")}" />
                             <title>Отбор астронавтов</title>
                           </head>
                           <body>
@@ -40,7 +43,7 @@ def load_photo():
 
     elif request.method == "POST":
         f = request.files["file"]
-        with open(f"static/img/{f.filename}", "w") as file:
+        with open(f"static/img/{f.filename}", "wb") as file:
             file.write(f.read())
         file = url_for("static", filename=f"img/{f.filename}")
         return f"""<!doctype html>
@@ -51,6 +54,9 @@ def load_photo():
                             content="width=device-width, initial-scale=1,
                             shrink-to-fit=no">
                             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+                            <link rel="stylesheet"
+                            type="text/css" href="{url_for("static",
+                            filename="css/style.css")}" />
                             <title>Отбор астронавтов</title>
                           </head>
                           <body>
@@ -66,7 +72,7 @@ def load_photo():
                                         class="form-control-file" id="photo"
                                         name="file">
                                     </div>
-                                    <img src="{file}" alt="картиночка">
+                                    <img src="{file}" alt="Фото">
                                     <br>
                                     <button type="submit"
                                     class="btn btn-primary">Отправить</button>
@@ -74,6 +80,7 @@ def load_photo():
                             </div>
                           </body>
                         </html>"""
+
 
 
 if __name__ == "__main__":
